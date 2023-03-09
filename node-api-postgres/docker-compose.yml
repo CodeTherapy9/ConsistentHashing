@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  node_app_1:
+    build: .
+    image: node_app
+    ports:
+      - "3000"
+    depends_on:
+      - node_db
+  node_app_2:
+    build: .
+    image: node_app
+    ports:
+      - "3000"
+    depends_on:
+      - node_db
+  node_app_3:
+    build: .
+    image: node_app
+    ports:
+      - "3000"
+    depends_on:
+      - node_db
+  node_db:
+    image: postgres:14
+    ports:
+    - "5432:5432"
+
+    environment:
+      - POSTGRES_DB=node_db
+      - POSTGRES_USER=notty
+      - POSTGRES_PASSWORD=12345678
+
+networks:
+  default:
+    name: api_node_net
+    driver: bridge
