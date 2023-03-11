@@ -11,9 +11,13 @@ const callAPI = async (methodType, url, queryParams = '', requestBody = {}, uniq
     }
     try {
       const result = await axios(options)
-      return result
+      return {...result.data, status: 200}
     } catch (err) {
-      console.log(`!!!! error connecting/fetching data from external API call ... `)
+      if (url[url.length - 1] != 'k')
+      console.log(`!!!! error connecting/fetching data from external API call ... `, err)
+      return {
+        status: 400
+      }
     }
   }
 module.exports = {
