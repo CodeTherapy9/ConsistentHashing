@@ -31,7 +31,7 @@ const getServerToServe = async (rid) => {
             lo = mid + 1
         }
     }
-    if (ans == -1) {
+    if (ans == -1 && serverList?.length) {
         ans = serverList[0]
     }
     return ans
@@ -40,7 +40,7 @@ const serveFromHashRing = async (rid) => {
     const server = await getServerToServe(rid)
     const hashId = hashGen.getNumberFromUrl(rid, 5, 10000)
     const resFromApiCall = await callAPI('GET', `${server.url}/api/${hashId}`)
-    
+
     return resFromApiCall
 }
 module.exports = {
