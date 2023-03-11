@@ -1,5 +1,6 @@
 const { callAPI } = require('./externalAPIcall')
 const { executeQuery } = require('./dbLayer')
+const moment = require("moment")
 const _ = require('lodash')
 const cron = require('cron').CronJob
 const listHealthyServers = async() => {
@@ -31,7 +32,7 @@ const registerNewServerOrMakeAliveDeadServer = async (port) => {
     ON DUPLICATE KEY UPDATE server_status = 1;`)
 }
 const serverList = async () => {
-    const servers = await executeQuery(`select id, base_url from servers`)
+    const servers = await executeQuery(`select id, base_url from servers where record_status = 1`)
     const result = []
     servers.forEach(server => {
         result.push({
@@ -61,12 +62,26 @@ const checkForHealthyServer = async () => {
       }
 }
 
-const updateDBforAnalytics = async () => {
-    
+const updateDBforAnalytics = async (server, status, rid) => {
+    const timeNow = moment().format("YYYY-MM-DD HH:mm:ss").toString();
+    return executeQuery(`INSERT INTO analytics(server, status, timestamp, rid)   
+    VALUES ("${server}", "${status}", "${timeNow}", "${rid}")`)
+}
+
+const addServerToMasterSet = async (server) => {
+    return executeQuery(`INSERT INTO servers(base_url, record_status) VALUES ("${server}", 1) ON DUPLICATE KEY UPDATE record_status = 1;`)
+}
+
+const deleteServerFromMasterSet = async (server) => {
+    return executeQuery(`UPDATE servers SET record_status = '0' WHERE base_url = "${server}");
+    `)
 }
 
 module.exports = {
     checkForHealthyServer,
     registerNewServerOrMakeAliveDeadServer,
-    listHealthyServers
+    listHealthyServers,
+    updateDBforAnalytics,
+    addServerToMasterSet,
+    deleteServerFromMasterSet
 }
