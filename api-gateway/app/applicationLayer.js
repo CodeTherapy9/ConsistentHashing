@@ -1,6 +1,6 @@
-const healthCheck = require('./healthCheck')
+const healthCheck = require('../util/healthCheck')
 const _ = require("lodash")
-const { callAPI } = require('./externalAPIcall')
+const { callAPI } = require('../util/externalAPIcall')
 const { findServer } = require('./consistentHashRing')
 
 const getServerToServe = async (rid) => {

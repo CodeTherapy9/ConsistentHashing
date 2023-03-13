@@ -1,8 +1,7 @@
-const {createOrUpdateHashRing} = require('./consistentHashRing')
+const {createOrUpdateHashRing} = require('../app/consistentHashRing')
 const cron = require('cron').CronJob
 
-const job = new cron(
-
+const health_check_job = new cron(
 	'*/20 * * * * *',
 	async function() {
 		console.log('running health check every 20 seconds to check active servers . . .');
@@ -26,10 +25,10 @@ const job = new cron(
         }
 	},
 	null,
-	true,
+	false,
 	'America/Los_Angeles'
 );
 
 module.exports = {
-
+health_check_job
 }

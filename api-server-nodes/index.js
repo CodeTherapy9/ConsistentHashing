@@ -2,7 +2,7 @@ const express = require('express');
 const bodyparser = require('body-parser');
 
 const app = express();
-const port=3000
+const port = 3000
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: false }));
 
@@ -18,7 +18,7 @@ app.get('/', (req, res, next) => {
 });
 
 //CRUD routes
-app.use('/api', require('./routes/users'));
+app.use('/api', require('./routes'));
 
 //error handling
 app.use((error, req, res, next) => {
@@ -29,6 +29,6 @@ app.use((error, req, res, next) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Api Node listening on port ${port}`)
 })
 

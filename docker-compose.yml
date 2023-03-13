@@ -1,0 +1,77 @@
+version: "3.9"
+
+services:
+  api_gateway:
+    restart: always
+    image: api_gateway
+    build: ./api-gateway/
+    ports:
+      - "6969:6969"
+    depends_on:
+      db_server:
+        condition: service_healthy
+    environment:
+      DB_HOST: 'db_server'
+      DB_USER: 'root'
+      DB_PASSWORD: '12345678'
+      DB_NAME: 'myDb'
+      DB_PORT: 3306
+
+  api_node_1:
+    restart: always
+    image: api_node
+    build: ./api-server-nodes/Dockerfile
+    ports:
+      - "3000"
+    depends_on:
+      - db_server
+  api_node_2:
+    restart: always
+    image: api_node
+    build: ./api-server-nodes/
+    ports:
+      - "3000"
+    depends_on:
+      - db_server
+  api_node_3:
+    restart: always
+    image: api_node
+    build: ./api-server-nodes/
+    ports:
+      - "3000"
+    depends_on:
+      - db_server
+
+  api_node_4:
+    restart: always
+    image: api_node
+    build: ./api-server-nodes/
+    ports:
+      - "3000"
+    depends_on:
+      - db_server
+
+  db_server:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'myDb'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'user'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: '12345678'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: '12345678'
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 55
+
+networks:
+  default:
+    name: api_node_net
+    driver: bridge

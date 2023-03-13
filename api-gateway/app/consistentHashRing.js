@@ -1,7 +1,7 @@
 const { createHash } = require('crypto')
-const healthCheck = require("./healthCheck")
+const healthCheck = require("../util/healthCheck")
 
-const {callAPI} = require("./externalAPIcall")
+const {callAPI} = require("../util/externalAPIcall")
 const ringSize = 1e9 + 7
 const wt = 50
 
