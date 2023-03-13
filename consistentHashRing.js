@@ -36,8 +36,8 @@ const createOrUpdateHashRing = async () => {
             idsWithDeadServer.push(serverInfo.port)
         } else idsToLive.push(serverInfo.port)
       }))
-    for (let i = 0; i < idsToLive.length; ++i) addNodesToRing(idsToLive[i].port)
-    for (let i = 0; i < idsWithDeadServer.length; ++i) removeNodesFromRing(idsWithDeadServer[i].port)
+    for (let i = 0; i < idsToLive.length; ++i) addNodesToRing(idsToLive[i])
+    for (let i = 0; i < idsWithDeadServer.length; ++i) removeNodesFromRing(idsWithDeadServer[i])
 
     hashRingArray = Array.from(hashRing)
     hashRingArray.sort((a, b) => {
