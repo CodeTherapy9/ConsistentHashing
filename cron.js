@@ -1,5 +1,3 @@
-const {checkForHealthyServer} = require('./healthCheck')
-const {getHashPositionsOfServers} = require('./applicationLayer')
 const {createOrUpdateHashRing} = require('./consistentHashRing')
 const cron = require('cron').CronJob
 

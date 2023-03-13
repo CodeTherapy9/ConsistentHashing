@@ -3,7 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 const Status = require('http-status')
 const applicationLayer = require('./applicationLayer')
-const {checkForHealthyServer, registerNewServerOrMakeAliveDeadServer, addServerToMasterSet, deleteServerFromMasterSet} = require('./healthCheck')
+const {addServerToMasterSet, deleteServerFromMasterSet} = require('./healthCheck')
 const cron = require('./cron')
 app.use(bodyParser());
 app.get('/consistent-hash/:rid', async (req, res) => {
