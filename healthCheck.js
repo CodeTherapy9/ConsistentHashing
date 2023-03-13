@@ -15,6 +15,19 @@ const listHealthyServers = async() => {
     return result
 }
 
+const listServers = async() => {
+    const servers = await executeQuery(`select id, server_port, server_status from server_live`)
+    const result = []
+    servers.forEach(server => {
+        result.push({
+            id: server.id,
+            port: server.server_port,
+            serverStatus: server.server_status
+        })
+    } )
+    return result
+}
+
 const unlistDeadServers = async (ids = []) => {
     if (ids.length == 0) return
     let query = "("
@@ -83,5 +96,6 @@ module.exports = {
     listHealthyServers,
     updateDBforAnalytics,
     addServerToMasterSet,
-    deleteServerFromMasterSet
+    deleteServerFromMasterSet,
+    listServers
 }

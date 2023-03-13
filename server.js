@@ -10,12 +10,10 @@ const {checkForHealthyServer, registerNewServerOrMakeAliveDeadServer, addServerT
 const cron = require('./cron')
 app.use(bodyParser());
 app.get('/consistent-hash/:rid', async (req, res) => {
-    const url =  crypto.createHash('sha1').update(req.params.rid).digest('hex') 
-    const result = await applicationLayer.serveFromHashRing(url)
-    const hashId = getNumberFromUrl(url, 5)
+    const result = await applicationLayer.serveFromHashRing(req.params.rid)
     res.send({
         result: result.message,
-        reqHashId: hashId
+        reqHashId: req.params.rid
     })
 })
 
