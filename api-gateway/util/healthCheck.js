@@ -1,5 +1,4 @@
-const { callAPI } = require('./externalAPIcall')
-const { executeQuery } = require('./dbLayer')
+const { executeQuery } = require('../models/dbLayer')
 const moment = require("moment")
 const _ = require('lodash')
 const cron = require('cron').CronJob

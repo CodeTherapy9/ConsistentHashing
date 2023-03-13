@@ -1,11 +1,12 @@
-const mysql = require('mysql');
+const dbConfig = require("../config/db.config.js");
+const mysql = require('mysql2');
 
 const pool = mysql.createPool({
     connectionLimit : 100, 
-    host     : 'localhost',
-    user     : 'root',
-    password : 'password',
-    database: 'myDb',
+    host     : dbConfig.HOST,
+    user     : dbConfig.USER,
+    password : dbConfig.PASSWORD,
+    database : dbConfig.DB,
     debug    :  false
 });
 console.log(`connected to mysql ...`)

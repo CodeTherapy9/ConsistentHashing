@@ -1,0 +1,14 @@
+{
+  "name": "api-server-nodes",
+  "version": "1.0.0",
+  "description": "A Sample API with Node.js To simulate an API Node",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": ""
+}
