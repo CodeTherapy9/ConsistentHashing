@@ -50,7 +50,21 @@ services:
       - "3000"
     depends_on:
       - db_server
-
+  py_analytics:
+    restart: always
+    image: py_analytics
+    build: ./py-analytics/
+    ports:
+      - "5050:5000"
+    depends_on:
+      db_server:
+        condition: service_healthy
+    environment:
+      DB_HOST: 'db_server'
+      DB_USER: 'root'
+      DB_PASSWORD: '12345678'
+      DB_NAME: 'myDb'
+      DB_PORT: 3306 
   db_server:
     image: mysql
     restart: always

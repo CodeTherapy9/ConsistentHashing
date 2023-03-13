@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Creating Real-Time Charts with Flask</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--suppress JSUnresolvedLibraryURL -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<!--suppress JSUnresolvedLibraryURL -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!--suppress JSUnresolvedLibraryURL -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+<script>
+    $(document).ready(function () {
+        const config = {
+            type: 'bar',
+            data: {
+                labels: ['api_node_1','api_node_2','api_node_3','api_node_4'],
+                datasets: [{
+                    label: "200",
+                    backgroundColor: 'rgb(0,255,0)',
+                    borderColor: 'rgb(0,255,0)',
+                    data: [],
+                    fill: false,
+                },
+                {
+                    label: "400",
+                    backgroundColor: 'rgb(255, 0, 0)',
+                    borderColor: 'rgb(255, 0, 0)',
+                    data: [],
+                    fill: false,
+                }],
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Creating Real-Time Charts with Flask'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: {
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Servers'
+                        }
+                    }
+                ,
+                    yAxes: {
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Requests'
+                        }
+                    }
+                }
+            }
+        };
+
+        const context = document.getElementById('canvas').getContext('2d');
+
+        const lineChart = new Chart(context, config);
+
+        const source = new EventSource("/chart-data");
+
+        source.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+            console.log(data)
+            // config.data.datasets[0].data.shift()
+            config.data.datasets[0].data=data.stat_200;
+            // config.data.datasets[1].data.shift()
+            config.data.datasets[1].data=data.stat_400;
+        
+            lineChart.update();
+        }
+    });
+</script>
+</body>
+</html>
