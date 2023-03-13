@@ -2,7 +2,7 @@ const {createOrUpdateHashRing} = require('./consistentHashRing')
 const cron = require('cron').CronJob
 
 const job = new cron(
-	'*/20 * * * * *',
+	'*/1 * * * * *',
 	async function() {
 		console.log('running health check every 20 seconds to check active servers . . .');
         const hashRing = await createOrUpdateHashRing()
