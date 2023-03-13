@@ -8,7 +8,6 @@ const job = new cron(
 		console.log('running health check every 20 seconds to check active servers . . .');
         const hashRing = await createOrUpdateHashRing()
         const dataMap = {}
-        console.log(hashRing.length)
         if (hashRing.length > 0) {
             const s = (Number(hashRing[0].split("#")[0]) + 1e9 + 7).toString() + "#" + hashRing[0].split("#")[1]
             hashRing.push(s)
