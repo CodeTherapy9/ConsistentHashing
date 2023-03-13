@@ -18,22 +18,6 @@ const listServers = async() => {
 }
 
 
-const registerNewServerOrMakeAliveDeadServer = async (port) => {
-    return executeQuery(`INSERT INTO server_live(server_port, server_status)   
-    VALUES ("${port}", 1)  
-    ON DUPLICATE KEY UPDATE server_status = 1;`)
-}
-const serverList = async () => {
-    const servers = await executeQuery(`select id, base_url from servers where record_status = 1`)
-    const result = []
-    servers.forEach(server => {
-        result.push({
-            id: server.id,
-            baseUrl: server.base_url
-        })
-    } )
-    return result
-}
 
 const updateDBforAnalytics = async (server, status, rid) => {
     const timeNow = moment().format("YYYY-MM-DD HH:mm:ss").toString();
@@ -42,16 +26,15 @@ const updateDBforAnalytics = async (server, status, rid) => {
 }
 
 const addServerToMasterSet = async (server) => {
-    return executeQuery(`INSERT INTO servers(base_url, record_status) VALUES ("${server}", 1) ON DUPLICATE KEY UPDATE record_status = 1;`)
+    return executeQuery(`INSERT INTO server_live(server_port, server_status) VALUES ("${server}", 1) ON DUPLICATE KEY UPDATE server_status = 1;`)
 }
 
 const deleteServerFromMasterSet = async (server) => {
-    return executeQuery(`UPDATE servers SET record_status = '0' WHERE base_url = "${server}");
+    return executeQuery(`UPDATE server_live SET server_status = '0' WHERE server_port = "${server}";
     `)
 }
 
 module.exports = {
-    registerNewServerOrMakeAliveDeadServer,
     updateDBforAnalytics,
     addServerToMasterSet,
     deleteServerFromMasterSet,

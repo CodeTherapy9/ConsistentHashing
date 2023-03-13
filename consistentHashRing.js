@@ -1,5 +1,7 @@
 const { createHash } = require('crypto')
 const healthCheck = require("./healthCheck")
+
+const {callAPI} = require("./externalAPIcall")
 const ringSize = 1e9 + 7
 const wt = 50
 
@@ -26,10 +28,17 @@ const removeNodesFromRing = (value) => {
 
 const createOrUpdateHashRing = async () => {
     const servers = await healthCheck.listServers()
-    for (let i = 0; i < servers.length; ++i) {
-        if(servers[i].serverStatus == 1) addNodesToRing(servers[i].port)
-        else removeNodesFromRing(servers[i].port)
-    }
+    const idsWithDeadServer = []
+    const idsToLive = []
+    await Promise.all(servers.map(async serverInfo => {
+        const healthCheckRes = await callAPI(`GET`, `${serverInfo.port}/api/health/check`)
+        if (!healthCheckRes || (healthCheckRes.status >= 400 && healthCheckRes.status < 600)) {
+            idsWithDeadServer.push(serverInfo.port)
+        } else idsToLive.push(serverInfo.port)
+      }))
+    for (let i = 0; i < idsToLive.length; ++i) addNodesToRing(idsToLive[i])
+    for (let i = 0; i < idsWithDeadServer.length; ++i) removeNodesFromRing(idsWithDeadServer[i])
+
     hashRingArray = Array.from(hashRing)
     hashRingArray.sort((a, b) => {
         return Number(a.split("#")[0]) - Number(b.split("#")[0])
