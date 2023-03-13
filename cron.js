@@ -4,9 +4,9 @@ const {createOrUpdateHashRing} = require('./consistentHashRing')
 const cron = require('cron').CronJob
 
 const job = new cron(
-	'*/5 * * * * *',
+	'*/20 * * * * *',
 	async function() {
-		console.log('running health check every 30 seconds to check active servers . . .');
+		console.log('running health check every 20 seconds to check active servers . . .');
         const hashRing = await createOrUpdateHashRing()
         const dataMap = {}
         if (hashRing.length > 0) {
