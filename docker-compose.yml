@@ -20,7 +20,7 @@ services:
   api_node_1:
     restart: always
     image: api_node
-    build: ./api-server-nodes/Dockerfile
+    build: ./api-server-nodes/
     ports:
       - "3000"
     depends_on:
@@ -77,7 +77,7 @@ services:
       # Password for root access
       MYSQL_ROOT_PASSWORD: '12345678'
     ports:
-      - "3306:3306"
+      - "3307:3306"
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
       start_period: 5s
