@@ -1,4 +1,7 @@
 # Creating a toy load balancer using consistent hashing
+
+[Watch Video To Follow Along](https://youtu.be/9TDIp6sckvw)
+
 TO RUN:
 
 0) Install docker and make sure docker daemon is running, install python3
@@ -49,6 +52,3 @@ SERVER 2 DOWN
 
 REBALANCING OF REQUESTS
 ![](./img/rebalanced.png)
-
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/9TDIp6sckvw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
