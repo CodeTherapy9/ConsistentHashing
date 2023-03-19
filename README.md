@@ -1,4 +1,7 @@
 # Creating a toy load balancer using consistent hashing
+
+[Watch Video To Follow Along](https://youtu.be/9TDIp6sckvw)
+
 TO RUN:
 
 0) Install docker and make sure docker daemon is running, install python3
